@@ -545,7 +545,6 @@ class COX:
 
         coefficients = cph.params_
         confidence_intervals = cph.confidence_intervals_
-
         # 找到最大和最小的系数值，用于统一坐标轴范围
         all_values = np.concatenate(
             (confidence_intervals.values.flatten(), coefficients.values)
@@ -556,7 +555,6 @@ class COX:
         fig, axes = plt.subplots(
             len(coefficients), 1, figsize=(10, len(coefficients)), sharex=True
         )
-
         # 遍历每个特征，绘制误差棒
         for i, (var, coef) in enumerate(coefficients.items()):
             ci_lower, ci_upper = confidence_intervals.loc[var]
@@ -572,20 +570,29 @@ class COX:
                 min_val - 1, 0, var, verticalalignment="center", fontsize=10, ha="right"
             )
 
-            # 设置轴
+            # 在误差棒上方添加数值标签
+            axes[i].text(coef, 0.1, f"{coef:.2f}", fontsize=8, ha="center", color="b")
+            axes[i].text(
+                ci_lower, 0.1, f"{ci_lower:.2f}", fontsize=8, ha="center", color="b"
+            )
+            axes[i].text(
+                ci_upper, 0.1, f"{ci_upper:.2f}", fontsize=8, ha="center", color="b"
+            )
+
+            # 设置每行的坐标轴
             axes[i].set_xlim(min_val - 1, max_val + 1)
             axes[i].set_yticks([])
-            axes[i].set_xticks([])
             axes[i].spines["top"].set_visible(False)
             axes[i].spines["right"].set_visible(False)
             axes[i].spines["left"].set_visible(False)
+            axes[i].spines["bottom"].set_position(("data", 0))
             axes[i].grid(True, axis="x", linestyle="--", alpha=0.7)
 
         # 设置总标题
         fig.suptitle("Nomogram with Error Bars", fontsize=14)
         plt.tight_layout(rect=[0, 0, 1, 0.96])
         # plt.show()
-        plt.savefig("./multi_cox.png")
+        plt.savefig("./multi_cox_2.png")
 
     @classmethod
     def cox_by_residence(cls, data_frame: pd.DataFrame):
