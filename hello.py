@@ -123,9 +123,7 @@ class COX:
     def cox_by_age_group(cls, data_frame: pd.DataFrame) -> None:
         cph = CoxPHFitter()
         df = data_frame
-        df["age_start"] = (
-            df["Age recode with <1 year olds"].str.extract(r"(\d+)")[0].astype(int)
-        )
+        df["age_start"] = df["Age"].str.extract(r"(\d+)")[0].astype(int)
         labels = ["0-19", "20-39", "40-49", "50-59", "60-69", "70-79", "80+"]
         df["age_group"] = pd.cut(
             df["age_start"],
@@ -141,7 +139,23 @@ class COX:
             formula="age_group",
             show_progress=False,
         )
-        cph.print_summary(style="html")
+        cph.print_summary(save_path=current_path / "data/cox_by_age_group.html")
+
+    @classmethod
+    def cox_by_age(cls, data_frame: pd.DataFrame) -> None:
+        cph = CoxPHFitter()
+        df = data_frame
+        df["age_start"] = df["Age"].str.extract(r"(\d+)")[0].astype(int)
+        df["age"] = df["age_start"].apply(lambda x: x >= 55)
+
+        cph.fit(
+            df,
+            duration_col="Survival months",
+            event_col="event",
+            formula="age",
+            show_progress=False,
+        )
+        cph.print_summary(save_path=current_path / "data/cox_by_age_55.html")
 
     @classmethod
     def cox_by_gender(cls, data_frame: pd.DataFrame) -> None:
@@ -242,7 +256,7 @@ class COX:
         cph = CoxPHFitter()
 
         df = data_frame
-        df["surgery"] = df["Reason no cancer-directed surgery"].apply(
+        df["surgery"] = df["Surgery"].apply(
             lambda x: "Performed" if x == "Surgery performed" else "No"
         )
         new_df = cls.set_reference(df, "surgery", ["Performed", "No"])
@@ -258,9 +272,7 @@ class COX:
     def cox_by_stage(cls, data_frame: pd.DataFrame):
         cph = CoxPHFitter()
         df = data_frame
-        new_df = cls.set_reference(
-            df, "Stage", ["In situ", "Localized", "Regional", "Distant"]
-        )
+        new_df = cls.set_reference(df, "Stage", ["Localized", "Regional", "Distant"])
         cph.fit(
             new_df,
             duration_col="Survival months",
@@ -273,28 +285,29 @@ class COX:
     def cox_by_grade(cls, data_frame: pd.DataFrame):
         cph = CoxPHFitter()
         df = data_frame
-        grade_map = {
-            "1": "I",
-            "2": "II",
-            "3": "III",
-            "I": "I",
-            "II": "II",
-            "III": "III",
-        }
+        # grade_map = {
+        #     "1": "I",
+        #     "2": "II",
+        #     "3": "III",
+        #     "I": "I",
+        #     "II": "II",
+        #     "III": "III",
+        # }
 
-        def outcome(row: pd.Series):
-            for col in ["8th", "7th", "6th"]:
-                r = str(row[col])
-                if "Blank" not in r:
-                    return grade_map.get(r, "IV")
-            raise ValueError("No grade found")
+        # def outcome(row: pd.Series):
+        #     for col in ["8th", "7th", "6th"]:
+        #         r = str(row[col])
+        #         if "Blank" not in r:
+        #             return grade_map.get(r, "IV")
+        #     raise ValueError("No grade found")
+        new_df = cls.set_reference(df, "Grade", [1, 2, 3, 4])
 
-        df["grade"] = df.apply(outcome, axis=1)
+        # df["grade"] = df.apply(outcome, axis=1)
         cph.fit(
-            df,
+            new_df,
             duration_col="Survival months",
             event_col="event",
-            formula="grade",
+            # formula="Grade",
             show_progress=True,
         )
         cph.print_summary(save_path=current_path / "data/cox_by_grade.html")
@@ -303,7 +316,7 @@ class COX:
     def cox_by_year(cls, data_frame: pd.DataFrame):
         cph = CoxPHFitter()
         df = data_frame
-        new_df = cls.set_reference(df, "Year of diagnosis", list(range(2004, 2020)))
+        new_df = cls.set_reference(df, "Year", list(range(2004, 2020)))
         cph.fit(
             new_df,
             duration_col="Survival months",
@@ -429,7 +442,7 @@ class COX:
         df["Race"] = df["Race recode"].apply(lambda x: race_map.get(x, "Other"))
         df["new_race"] = pd.Categorical(
             df["Race"],
-            categories=["W", "B", "Other"],
+            categories=["B", "W", "Other"],
             ordered=True,
         )
         df = pd.get_dummies(df, columns=["new_race"], drop_first=True)
@@ -454,7 +467,7 @@ class COX:
         df["grade"] = df.apply(grade_outcome, axis=1)
         df["new_grade"] = pd.Categorical(
             df["grade"],
-            categories=[1, 2, 3, 4],
+            categories=[3, 1, 2, 4],
             ordered=True,
         )
         df = pd.get_dummies(df, columns=["new_grade"], drop_first=True)
@@ -478,7 +491,9 @@ class COX:
                 return 6
             if age < 70:
                 return 7
-            return 8
+            if age < 80:
+                return 8
+            return 9
 
         # age
         df["age_start"] = (
@@ -496,12 +511,36 @@ class COX:
         #     labels=labels,
         #     right=False,
         # )
+        ages = list(ages)
+        ages.sort()
+        ages.remove(9)
+        ages.insert(0, 9)
+        print(ages)
         df["new_age"] = pd.Categorical(
             df["age_start"],
-            categories=sorted(list(ages)),
+            categories=ages,
             ordered=True,
         )
         df = pd.get_dummies(df, columns=["new_age"], drop_first=True)
+
+        # def stage_outcome(age: str):
+        #     if age == "In situ":
+        #         return 0
+        #     if age == "Localized":
+        #         return 1
+        #     if age == "Regional":
+        #         return 2
+        #     # if age == "Distant":
+        #     return 3
+
+        # df["stage_1"] = df["Stage"].apply(stage_outcome)
+        # print({item for item in df["stage_1"]})
+        df["new_stage"] = pd.Categorical(
+            df["Stage"],
+            categories=["Distant", "Localized", "Regional"],
+            ordered=True,
+        )
+        df = pd.get_dummies(df, columns=["new_stage"], drop_first=True)
 
         df["gender"] = df["Sex"].apply(lambda x: 1 if x == "Male" else 0)
         df["new_gender"] = pd.Categorical(
@@ -518,6 +557,7 @@ class COX:
         cph = CoxPHFitter()
         new_df = df[used_col]
         new_df.to_csv("./parsed_data.csv", index=False)
+        return
         cph.fit(
             new_df,
             duration_col="Survival months",
@@ -614,22 +654,24 @@ class COX:
         # df = pd.read_excel("./table2.xlsx")
         # df = df[df["COD to site recode"] != "Alive"]
         # df["event"] = df["COD to site recode"].apply(cls.categorize_outcome)
+        # df = df.drop(columns=["COD to site recode"])
         # df.to_excel("./data.xlsx", index=False)
         df = pd.read_excel(current_path / "data/data.xlsx")
-        # cls.cox_by_age_group(df)
-        # cls.cox_by_gender(df)
-        # cls.cox_by_race(df)
-        # cls.cox_by_nhia(df)
-        # cls.cox_by_marital_status(df)
-        # cls.cox_by_surgery(df)
-        # cls.cox_by_stage(df)
-        # cls.cox_by_grade(df)
-        # cls.cox_by_year(df)
+        cls.cox_by_age_group(df)
+        cls.cox_by_age(df)
+        cls.cox_by_gender(df)
+        cls.cox_by_race(df)
+        cls.cox_by_nhia(df)
+        cls.cox_by_marital_status(df)
+        cls.cox_by_surgery(df)
+        cls.cox_by_stage(df)
+        cls.cox_by_grade(df)
+        cls.cox_by_year(df)
         # cls.cox_by_radio(df)
-        # cls.cox_by_chemo(df)
-        # cls.cox_by_income(df)
-        cls.multi_cox()
-        # cls.cox_by_residence(df)
+        cls.cox_by_chemo(df)
+        cls.cox_by_income(df)
+        # cls.multi_cox()
+        cls.cox_by_residence(df)
 
     @classmethod
     def run(cls):
