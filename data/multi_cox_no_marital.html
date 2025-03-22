@@ -1,0 +1,304 @@
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <tbody>
+    <tr>
+      <th>model</th>
+      <td>lifelines.CoxPHFitter</td>
+    </tr>
+    <tr>
+      <th>duration col</th>
+      <td>'Survival months'</td>
+    </tr>
+    <tr>
+      <th>event col</th>
+      <td>'event'</td>
+    </tr>
+    <tr>
+      <th>baseline estimation</th>
+      <td>breslow</td>
+    </tr>
+    <tr>
+      <th>number of observations</th>
+      <td>18911</td>
+    </tr>
+    <tr>
+      <th>number of events observed</th>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>partial log-likelihood</th>
+      <td>-1058.40</td>
+    </tr>
+    <tr>
+      <th>time fit was run</th>
+      <td>2025-03-22 02:37:37 UTC</td>
+    </tr>
+    <tr>
+      <th>save_path</th>
+      <td>./data/multi_cox_no_marital.html</td>
+    </tr>
+  </tbody>
+</table>
+</div><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th style="min-width: 12px;"></th>
+      <th style="min-width: 12px;">coef</th>
+      <th style="min-width: 12px;">exp(coef)</th>
+      <th style="min-width: 12px;">se(coef)</th>
+      <th style="min-width: 12px;">coef lower 95%</th>
+      <th style="min-width: 12px;">coef upper 95%</th>
+      <th style="min-width: 12px;">exp(coef) lower 95%</th>
+      <th style="min-width: 12px;">exp(coef) upper 95%</th>
+      <th style="min-width: 12px;">cmp to</th>
+      <th style="min-width: 12px;">z</th>
+      <th style="min-width: 12px;">p</th>
+      <th style="min-width: 12px;">-log2(p)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>new_race_B</th>
+      <td>-1.16</td>
+      <td>0.31</td>
+      <td>0.51</td>
+      <td>-2.16</td>
+      <td>-0.16</td>
+      <td>0.12</td>
+      <td>0.85</td>
+      <td>0.00</td>
+      <td>-2.27</td>
+      <td>0.02</td>
+      <td>5.45</td>
+    </tr>
+    <tr>
+      <th>new_race_Other</th>
+      <td>-0.20</td>
+      <td>0.82</td>
+      <td>0.33</td>
+      <td>-0.85</td>
+      <td>0.45</td>
+      <td>0.43</td>
+      <td>1.57</td>
+      <td>0.00</td>
+      <td>-0.61</td>
+      <td>0.55</td>
+      <td>0.88</td>
+    </tr>
+    <tr>
+      <th>new_grade_1</th>
+      <td>0.67</td>
+      <td>1.96</td>
+      <td>0.37</td>
+      <td>-0.05</td>
+      <td>1.40</td>
+      <td>0.95</td>
+      <td>4.04</td>
+      <td>0.00</td>
+      <td>1.82</td>
+      <td>0.07</td>
+      <td>3.85</td>
+    </tr>
+    <tr>
+      <th>new_grade_2</th>
+      <td>0.52</td>
+      <td>1.68</td>
+      <td>0.45</td>
+      <td>-0.36</td>
+      <td>1.39</td>
+      <td>0.70</td>
+      <td>4.02</td>
+      <td>0.00</td>
+      <td>1.16</td>
+      <td>0.25</td>
+      <td>2.03</td>
+    </tr>
+    <tr>
+      <th>new_grade_4</th>
+      <td>0.53</td>
+      <td>1.69</td>
+      <td>0.42</td>
+      <td>-0.29</td>
+      <td>1.35</td>
+      <td>0.75</td>
+      <td>3.85</td>
+      <td>0.00</td>
+      <td>1.26</td>
+      <td>0.21</td>
+      <td>2.27</td>
+    </tr>
+    <tr>
+      <th>new_age_2</th>
+      <td>2.30</td>
+      <td>9.96</td>
+      <td>1.13</td>
+      <td>0.09</td>
+      <td>4.51</td>
+      <td>1.09</td>
+      <td>91.08</td>
+      <td>0.00</td>
+      <td>2.04</td>
+      <td>0.04</td>
+      <td>4.58</td>
+    </tr>
+    <tr>
+      <th>new_age_4</th>
+      <td>2.93</td>
+      <td>18.80</td>
+      <td>0.54</td>
+      <td>1.87</td>
+      <td>4.00</td>
+      <td>6.46</td>
+      <td>54.65</td>
+      <td>0.00</td>
+      <td>5.39</td>
+      <td>&lt;0.005</td>
+      <td>23.73</td>
+    </tr>
+    <tr>
+      <th>new_age_5</th>
+      <td>2.03</td>
+      <td>7.60</td>
+      <td>0.54</td>
+      <td>0.96</td>
+      <td>3.09</td>
+      <td>2.62</td>
+      <td>22.00</td>
+      <td>0.00</td>
+      <td>3.74</td>
+      <td>&lt;0.005</td>
+      <td>12.40</td>
+    </tr>
+    <tr>
+      <th>new_age_6</th>
+      <td>1.49</td>
+      <td>4.44</td>
+      <td>0.54</td>
+      <td>0.44</td>
+      <td>2.54</td>
+      <td>1.55</td>
+      <td>12.68</td>
+      <td>0.00</td>
+      <td>2.78</td>
+      <td>0.01</td>
+      <td>7.54</td>
+    </tr>
+    <tr>
+      <th>new_age_7</th>
+      <td>0.78</td>
+      <td>2.18</td>
+      <td>0.55</td>
+      <td>-0.29</td>
+      <td>1.85</td>
+      <td>0.75</td>
+      <td>6.37</td>
+      <td>0.00</td>
+      <td>1.43</td>
+      <td>0.15</td>
+      <td>2.70</td>
+    </tr>
+    <tr>
+      <th>new_age_8</th>
+      <td>0.43</td>
+      <td>1.54</td>
+      <td>0.56</td>
+      <td>-0.67</td>
+      <td>1.54</td>
+      <td>0.51</td>
+      <td>4.66</td>
+      <td>0.00</td>
+      <td>0.77</td>
+      <td>0.44</td>
+      <td>1.18</td>
+    </tr>
+    <tr>
+      <th>new_stage_Regional</th>
+      <td>-0.11</td>
+      <td>0.90</td>
+      <td>0.27</td>
+      <td>-0.65</td>
+      <td>0.43</td>
+      <td>0.52</td>
+      <td>1.54</td>
+      <td>0.00</td>
+      <td>-0.39</td>
+      <td>0.69</td>
+      <td>0.53</td>
+    </tr>
+    <tr>
+      <th>new_stage_Distant</th>
+      <td>-1.09</td>
+      <td>0.34</td>
+      <td>0.55</td>
+      <td>-2.18</td>
+      <td>-0.00</td>
+      <td>0.11</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>-1.97</td>
+      <td>0.05</td>
+      <td>4.34</td>
+    </tr>
+    <tr>
+      <th>new_gender_1</th>
+      <td>0.85</td>
+      <td>2.35</td>
+      <td>0.18</td>
+      <td>0.50</td>
+      <td>1.21</td>
+      <td>1.65</td>
+      <td>3.34</td>
+      <td>0.00</td>
+      <td>4.75</td>
+      <td>&lt;0.005</td>
+      <td>18.92</td>
+    </tr>
+  </tbody>
+</table><br><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <tbody>
+    <tr>
+      <th>Concordance</th>
+      <td>0.76</td>
+    </tr>
+    <tr>
+      <th>Partial AIC</th>
+      <td>2144.80</td>
+    </tr>
+    <tr>
+      <th>log-likelihood ratio test</th>
+      <td>146.13 on 14 df</td>
+    </tr>
+    <tr>
+      <th>-log2(p) of ll-ratio test</th>
+      <td>77.63</td>
+    </tr>
+  </tbody>
+</table>
+</div>
